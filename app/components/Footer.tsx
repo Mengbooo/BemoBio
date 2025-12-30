@@ -1,8 +1,10 @@
 'use client'
 
+import ASCIICube from './ascii/ASCIICube'
+
 export default function Footer() {
   return (
-    <footer className="bg-zinc-900 text-white">
+    <footer className="min-h-screen bg-transparent text-white border-t border-zinc-800 relative">
       <div className="container mx-auto px-8 py-16 grid grid-cols-12 gap-6">
         {/* Logo */}
         <div className="col-span-12 md:col-span-6 lg:col-span-4 mt-8">
@@ -44,6 +46,11 @@ export default function Footer() {
         <div className="col-span-12 mt-16 mb-8 text-xs uppercase opacity-60 border-t border-zinc-800 pt-8">
           © 2025 BemoBio. All rights reserved
         </div>
+      </div>
+
+      {/* ASCII Cube - Bottom right of Footer */}
+      <div className="absolute bottom-8 right-8 w-[300px] h-[300px] rounded-2xl overflow-hidden border border-zinc-800 bg-black">
+        <ASCIICube />
       </div>
     </footer>
   )
