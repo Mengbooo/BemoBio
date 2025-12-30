@@ -2,6 +2,9 @@ import ASCIIShader from "./components/ascii/ASCIIShader";
 import ASCIIText from "./components/ascii/ASCIIText";
 import PhysicsSketch from "./components/ascii/PhysicsSketch";
 import Navigation from "./components/Navigation";
+import MagneticGrid from "./components/MagneticGrid";
+import HorizontalGallery from "./components/HorizontalGallery";
+import Footer from "./components/Footer";
 
 
 export default function Home() {
@@ -11,11 +14,11 @@ export default function Home() {
       <Navigation />
 
       {/* Main Container */}
-      <div className="container mx-auto px-8 py-24 h-screen flex items-center">
-        <div className="grid grid-cols-12 gap-6 w-full h-[calc(100vh-12rem)]">
+      <div className="container mx-auto px-8 py-24 h-screen flex items-end">
+        <div className="grid grid-cols-12 gap-6 w-full">
           
           {/* Main ASCII Animation Card */}
-          <div className="col-span-8 relative rounded-[2.5rem] overflow-hidden">
+          <div className="col-span-8 relative rounded-[2.5rem] overflow-hidden h-[calc(100vh-12rem)]">
             <ASCIIShader 
               frequency={2.5}
               speed={0.2}
@@ -27,7 +30,7 @@ export default function Home() {
           </div>
 
           {/* Right Sidebar Cards */}
-          <div className="col-span-4 flex flex-col gap-6">
+          <div className="col-span-4 flex flex-col gap-6 h-[calc(100vh-12rem)]">
             {/* ASCII Text Card */}
             <div className="bg-transparent rounded-3xl overflow-hidden aspect-square relative border border-zinc-800">
               {/* Top Text */}
@@ -52,30 +55,27 @@ export default function Home() {
                   />
                 </div>
               </div>
-              {/* Bottom Right Text */}
-              <div className="absolute bottom-4 right-4 text-bold text-zinc-300 z-10 pointer-events-none font-semibold">
-                Here is Bolaxious
-              </div>
             </div>
             {/* Dithering Shader Card */}
-            <div className="bg-black rounded-3xl overflow-hidden flex-1 border border-purple-500/30 relative">
+            <div className="bg-black rounded-3xl overflow-hidden h-112 border border-purple-500/30 relative">
               <PhysicsSketch />
+            </div>
+            {/* Bottom Text - moved here */}
+            <div className="bg-black px-6 py-4 rounded-2xl mt-auto">
+              <p className="text-xl font-semibold">
+                Here is Bolaxious!<br/>A front-end beginner 👀<br/>& design novice 🍟
+              </p>
+              <button className="w-10 h-10 rounded-full border border-white/30 hover:bg-white/10 transition-colors flex items-center justify-center mt-4">
+                ↓
+              </button>
             </div>
           </div>
         </div>
       </div>
+    
 
-      {/* Bottom Left Text */}
-      <div className="fixed bottom-8 left-8 z-10">
-        <div className="bg-black px-6 py-4 rounded-2xl inline-block">
-          <p className="text-2xl font-semibold">
-            Equal parts creative<br />developer & designer
-          </p>
-        </div>
-        <button className="w-10 h-10 rounded-full border border-white/30 hover:bg-white/10 transition-colors flex items-center justify-center mt-4">
-          ↓
-        </button>
-      </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
