@@ -7,6 +7,9 @@ import HorizontalGallery from "./components/HorizontalGallery";
 import Footer from "./components/Footer";
 import GradientMaskCard from "./components/GradientMaskCard";
 import NyanCat from "./components/ascii/NyanCat";
+import Prism from "./components/animation/Prism";
+import ColorBends from "./components/animation/ColorBends";
+
 
 
 export default function Home() {
@@ -18,12 +21,12 @@ export default function Home() {
       {/* Main Section - Hero */}
       <section id="hero" className="container mx-auto px-8 py-24 h-screen flex items-end">
         <div className="grid grid-cols-12 gap-6 w-full">
-          
+
           {/* Main ASCII Animation Card */}
           <div className="col-span-8 relative rounded-[2.5rem] overflow-hidden h-[calc(100vh-12rem)]">
-            <ASCIIShader 
+            <ASCIIShader
               frequency={2.5}
-              speed={0.2}
+              speed={0.4}
               lightness={1}
               colorPrimary="#00ff00"
               colorSecondary="#003300"
@@ -65,7 +68,7 @@ export default function Home() {
             {/* Bottom Text - moved here */}
             <div className="bg-black px-6 py-4 rounded-2xl mt-auto">
               <p className="text-xl font-semibold">
-                Here is Bolaxious!<br/>A front-end beginner 👀<br/>& design novice 🍟
+                Here is Bolaxious!<br />A front-end beginner 👀<br />& design novice 🍟
               </p>
               <a href="#works" className="w-10 h-10 rounded-full border border-white/30 hover:bg-white/10 transition-colors flex items-center justify-center mt-4">
                 ↓
@@ -74,7 +77,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-    
+
       {/* Selected Works Section */}
       <section id="works" className="container mx-auto px-8 pt-24">
         <h2 className="text-2xl font-bold">Selected Works</h2>
@@ -118,7 +121,43 @@ export default function Home() {
         </div>
       </section>
 
-      <NyanCat />
+      {/* <NyanCat /> */}
+      {/* <div style={{ width: '100%', height: '800px', position: 'relative' }}>
+        <Prism
+          animationType="rotate"
+          timeScale={0.5}
+          height={2.5}
+          baseWidth={5.5}
+          scale={3.6}
+          hueShift={0}
+          colorFrequency={1}
+          noise={0.5}
+          glow={1}
+        />
+      </div> */}
+
+      <div className="container mx-auto px-8 relative" style={{ minHeight: '40vh' }}>
+        <ColorBends
+          colors={["#ff0000","#00ff00", "#0000ff"]}
+          rotation={0}
+          speed={0.2}
+          scale={1}
+          frequency={1}
+          warpStrength={1}
+          mouseInfluence={1}
+          parallax={1}
+          noise={0.1}
+          transparent
+        />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <img 
+            src="/stay-tuned-for-more.svg" 
+            alt="Stay tuned for more" 
+            className="w-auto h-16" 
+            style={{ filter: 'invert(1) brightness(2) drop-shadow(0 0 8px white)' }}
+          />
+        </div>
+      </div>
 
       {/* Footer with integrated FluidTriangle */}
       <Footer />
