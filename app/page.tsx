@@ -15,8 +15,8 @@ export default function Home() {
       {/* Navigation */}
       <Navigation />
 
-      {/* Main Container */}
-      <div className="container mx-auto px-8 py-24 h-screen flex items-end">
+      {/* Main Section - Hero */}
+      <section id="hero" className="container mx-auto px-8 py-24 h-screen flex items-end">
         <div className="grid grid-cols-12 gap-6 w-full">
           
           {/* Main ASCII Animation Card */}
@@ -67,45 +67,53 @@ export default function Home() {
               <p className="text-xl font-semibold">
                 Here is Bolaxious!<br/>A front-end beginner 👀<br/>& design novice 🍟
               </p>
-              <button className="w-10 h-10 rounded-full border border-white/30 hover:bg-white/10 transition-colors flex items-center justify-center mt-4">
+              <a href="#works" className="w-10 h-10 rounded-full border border-white/30 hover:bg-white/10 transition-colors flex items-center justify-center mt-4">
                 ↓
-              </button>
+              </a>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     
       {/* Selected Works Section */}
-      <section className="container mx-auto px-8">
+      <section id="works" className="container mx-auto px-8 pt-24">
         <h2 className="text-2xl font-bold">Selected Works</h2>
         <div className="space-y-0">
           {/* Work Item 1 */}
           <GradientMaskCard
             title="BemoUI"
             description="Animated UI Components"
-            tags={['React', 'Animation', 'Components']}
+            tags={['React']}
             gradientColors="from-green-500/20 to-teal-500/20"
+            link="https://bemo-ui.vercel.app/"
+            icon="/bemoui.svg"
           />
           {/* Work Item 2 */}
           <GradientMaskCard
             title="BemoBio"
-            description="React Utility Library"
-            tags={['React', 'Library', 'UI']}
+            description="Bolaxious' Portfolio"
+            tags={['React']}
             gradientColors="from-purple-500/20 to-blue-500/20"
+            link="https://bemo-bio.vercel.app/"
+            icon="/bemobio.svg"
           />
           {/* Work Item 3 */}
           <GradientMaskCard
             title="BemoDB 2.0"
-            description="Straightforward IP Tracker"
-            tags={['Tool', 'Network', 'Tracking']}
-            gradientColors="from-orange-500/20 to-red-500/20"
+            description="Bolaxious' Blog 2.0"
+            tags={['Blog']}
+            gradientColors="from-red-500/20 to-orange-500/20"
+            link="https://bolaxious.cn"
+            icon="/bemodb.svg"
           />
           {/* Work Item 4 */}
           <GradientMaskCard
             title="Github"
-            description="Straightforward IP Tracker"
-            tags={['Tool', 'Network', 'Tracking']}
-            gradientColors="from-orange-500/20 to-red-500/20"
+            description="Bolaxious' GitHub"
+            tags={['See More On···']}
+            gradientColors="from-blue-500/20 to-teal-500/20"
+            link="https://github.com/Mengbooo"
+            icon="/github.svg"
           />
         </div>
       </section>

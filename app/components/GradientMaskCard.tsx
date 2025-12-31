@@ -1,12 +1,15 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface GradientMaskCardProps {
   title: string
   description: string
   tags: string[]
   gradientColors?: string
+  link?: string
+  icon?: string
 }
 
 const getRandomString = (length: number) => {
@@ -24,7 +27,9 @@ export default function GradientMaskCard({
   title,
   description,
   tags,
-  gradientColors = 'from-purple-500/20 to-blue-500/20'
+  gradientColors = 'from-purple-500/20 to-blue-500/20',
+  link,
+  icon
 }: GradientMaskCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const decoRef = useRef<HTMLDivElement>(null)
@@ -50,8 +55,8 @@ export default function GradientMaskCard({
       renderedStyles.current.x.current = x
       renderedStyles.current.y.current = y
       
-      // 生成新的随机字符串
-      setRandomText(getRandomString(2000))
+      // 生成新的随机字符串 - 增加字符数量确保覆盖整个区域
+      setRandomText(getRandomString(5000))
     }
 
     const animate = () => {
@@ -91,7 +96,7 @@ export default function GradientMaskCard({
 
   const handleMouseEnter = () => {
     setIsHovered(true)
-    setRandomText(getRandomString(2000))
+    setRandomText(getRandomString(5000))
     
     // 初始化位置
     if (cardRef.current) {
@@ -105,51 +110,74 @@ export default function GradientMaskCard({
     setIsHovered(false)
   }
 
+  const handleClick = () => {
+    if (link) {
+      window.open(link, '_blank', 'noopener,noreferrer')
+    }
+  }
+
   return (
     <div
       ref={cardRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="group relative w-full border-b border-zinc-800 hover:border-zinc-600 transition-all duration-300 py-4 cursor-pointer"
+      onClick={handleClick}
+      className="group relative w-full border-b border-zinc-800 hover:border-zinc-600 transition-all duration-300 py-4 cursor-pointer overflow-visible"
       style={{
         '--mouse-x': '0px',
         '--mouse-y': '0px'
       } as React.CSSProperties}
     >
+      {/* 全局动态文字层 - 覆盖整个卡片 */}
+      <div
+        ref={decoRef}
+        className="absolute top-0 left-0 right-0 bottom-0 font-mono text-[0.6rem] leading-tight break-all pointer-events-none transition-opacity duration-500 z-20 overflow-hidden"
+        style={{
+          opacity: isHovered ? 1 : 0,
+          WebkitMaskImage: 'radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), black 20%, rgba(0,0,0,0.25), transparent)',
+          maskImage: 'radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), black 20%, rgba(0,0,0,0.25), transparent)',
+          minHeight: '100%',
+          backgroundImage: 'linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080, #7b68ee, #00ced1)',
+          backgroundSize: '400% 400%',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          color: 'transparent',
+          animation: 'gradient-shift 8s ease infinite'
+        }}
+      >
+        {randomText}
+      </div>
+
+      <style jsx>{`
+        @keyframes gradient-shift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
+
       <div className="flex items-center justify-between gap-8">
-        {/* 左侧：标签、标题、描述 */}
+        {/* 左侧：标签、SVG图标、描述 */}
         <div className="flex-1 space-y-1">
           <p className="text-xs text-zinc-500 uppercase tracking-wider">{tags[0]}</p>
-          <h3 className="text-3xl md:text-5xl font-bold transition-transform duration-300 group-hover:translate-x-2">{title}</h3>
-          <p className="text-xs text-zinc-400 uppercase tracking-wide">{description}</p>
-        </div>
-
-        {/* 右侧：GradientMask 效果区域 */}
-        <div className="relative w-40 h-40 overflow-hidden rounded-2xl flex-shrink-0">
-          {/* 背景渐变 */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${gradientColors}`} />
           
-          {/* 动态文字层 - 带遮罩 */}
-          <div
-            ref={decoRef}
-            className="absolute inset-0 font-mono text-[0.6rem] leading-tight break-all text-white pointer-events-none transition-opacity duration-500"
-            style={{
-              opacity: isHovered ? 1 : 0,
-              WebkitMaskImage: 'radial-gradient(200px circle at var(--mouse-x) var(--mouse-y), black 20%, rgba(0,0,0,0.25), transparent)',
-              maskImage: 'radial-gradient(200px circle at var(--mouse-x) var(--mouse-y), black 20%, rgba(0,0,0,0.25), transparent)'
-            }}
-          >
-            {randomText}
-          </div>
-
-          {/* 渐变叠加层 */}
-          <div 
-            className="absolute inset-0 opacity-70"
-            style={{
-              background: 'radial-gradient(rgb(23, 24, 37) 40%, rgb(102, 51, 238) 50%, rgb(142, 100, 255), rgb(249, 38, 114))',
-              mixBlendMode: 'darken'
-            }}
-          />
+          {/* SVG 图标代替标题 */}
+          {icon && (
+            <div className="w-32 h-16 my-2">
+              <Image
+                src={icon}
+                alt={title}
+                width={128}
+                height={64}
+                className="w-full h-full object-contain object-left"
+                style={{
+                  filter: 'brightness(0) invert(1)',
+                  opacity: 0.9
+                }}
+              />
+            </div>
+          )}
+          
+          <p className="text-xs text-zinc-400 uppercase tracking-wide">{description}</p>
         </div>
       </div>
     </div>

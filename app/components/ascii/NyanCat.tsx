@@ -57,6 +57,7 @@ const NyanCat = () => {
           width: 100%;
           min-height: 30vh;
           margin: 0;
+          filter: blur(5px);
         }
 
         /* List Reset */

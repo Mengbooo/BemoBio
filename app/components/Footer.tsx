@@ -4,6 +4,8 @@ import WaveText from './animation/RotatingText'
 import ThruVFX from './ThruVFX'
 import FluidTriangle from './ascii/FluidTriangle'
 import SplashCursor from './animation/Cursor'
+import Image from 'next/image'
+
 
 export default function Footer() {
   return (
@@ -13,22 +15,31 @@ export default function Footer() {
       <div className="container mx-auto px-8 py-16 grid grid-cols-12 gap-6 relative flex-1">
         {/* Logo */}
         <div className="col-span-12 md:col-span-6 lg:col-span-4 mt-8">
-          <span className="text-4xl font-black">BemoBio</span>
+          <div className="w-32 h-16 my-2">
+            <Image
+              src="/logo5.png"
+              alt="BemoBio Logo"
+              width={400}
+              height={400}
+              className="rounded-lg object-cover"
+            />
+          </div>
         </div>
 
         {/* Menu */}
         <nav className="col-span-6 md:col-span-3 lg:col-span-2 mt-8 flex flex-col gap-2 text-lg">
           <span className="font-semibold mb-2">Menu</span>
-          <a href="#" className="hover:opacity-70 transition-opacity">Homepage</a>
-          <a href="#" className="hover:opacity-70 transition-opacity">Works</a>
+          <a href="#hero" className="hover:opacity-70 transition-opacity">Homepage</a>
+          <a href="#works" className="hover:opacity-70 transition-opacity">Works</a>
           <a href="mailto:bolaxious@163.com" className="hover:opacity-70 transition-opacity">Contact</a>
         </nav>
 
         {/* Socials */}
-        <nav className="col-span-6 md:col-span-3 lg:col-span-2 mt-8 flex flex-col gap-2">
+        <nav className="col-span-6 md:col-span-3 lg:col-span-2 mt-8 flex flex-col gap-2 text-lg">
           <span className="font-semibold mb-2">Socials</span>
-          <a href="#" className="hover:opacity-70 transition-opacity text-sm">GitHub</a>
-          <a href="#" className="hover:opacity-70 transition-opacity text-sm">Xhs</a>
+          <a href="https://bolaxious.cn" target='_blank' className="hover:opacity-70 transition-opacity">Blog</a>
+          <a href="https://github.com/Mengbooo" target='_blank' className="hover:opacity-70 transition-opacity ">GitHub</a>
+          <a href="https://www.xiaohongshu.com/user/profile/6025423800000000010094a0" target="_blank" className="hover:opacity-70 transition-opacity ">Xhs</a>
         </nav>
 
         {/* Motto */}
