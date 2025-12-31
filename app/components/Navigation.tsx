@@ -11,8 +11,8 @@ export default function Navigation() {
           <Image 
             src="/logo3.png" 
             alt="BemoBio Logo" 
-            width={100}
-            height={100}
+            width={50}
+            height={50}
             className="rounded-lg object-cover"
           />
         </div>

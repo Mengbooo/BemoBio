@@ -5,6 +5,8 @@ import Navigation from "./components/Navigation";
 import MagneticGrid from "./components/MagneticGrid";
 import HorizontalGallery from "./components/HorizontalGallery";
 import Footer from "./components/Footer";
+import GradientMaskCard from "./components/GradientMaskCard";
+import NyanCat from "./components/ascii/NyanCat";
 
 
 export default function Home() {
@@ -73,8 +75,44 @@ export default function Home() {
         </div>
       </div>
     
+      {/* Selected Works Section */}
+      <section className="container mx-auto px-8">
+        <h2 className="text-2xl font-bold">Selected Works</h2>
+        <div className="space-y-0">
+          {/* Work Item 1 */}
+          <GradientMaskCard
+            title="BemoUI"
+            description="Animated UI Components"
+            tags={['React', 'Animation', 'Components']}
+            gradientColors="from-green-500/20 to-teal-500/20"
+          />
+          {/* Work Item 2 */}
+          <GradientMaskCard
+            title="BemoBio"
+            description="React Utility Library"
+            tags={['React', 'Library', 'UI']}
+            gradientColors="from-purple-500/20 to-blue-500/20"
+          />
+          {/* Work Item 3 */}
+          <GradientMaskCard
+            title="BemoDB 2.0"
+            description="Straightforward IP Tracker"
+            tags={['Tool', 'Network', 'Tracking']}
+            gradientColors="from-orange-500/20 to-red-500/20"
+          />
+          {/* Work Item 4 */}
+          <GradientMaskCard
+            title="Github"
+            description="Straightforward IP Tracker"
+            tags={['Tool', 'Network', 'Tracking']}
+            gradientColors="from-orange-500/20 to-red-500/20"
+          />
+        </div>
+      </section>
 
-      {/* Footer */}
+      <NyanCat />
+
+      {/* Footer with integrated FluidTriangle */}
       <Footer />
     </div>
   );

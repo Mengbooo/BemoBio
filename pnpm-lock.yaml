@@ -20,12 +20,18 @@ importers:
       '@types/three':
         specifier: ^0.182.0
         version: 0.182.0
+      '@vfx-js/core':
+        specifier: ^0.8.0
+        version: 0.8.0
       framer-motion:
         specifier: ^12.23.26
         version: 12.23.26(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       gsap:
         specifier: ^3.14.2
         version: 3.14.2
+      lenis:
+        specifier: ^1.3.17
+        version: 1.3.17(react@19.2.3)
       matter-js:
         specifier: ^0.20.0
         version: 0.20.0
@@ -820,6 +826,9 @@ packages:
     peerDependencies:
       react: '>= 16.8.0'
 
+  '@vfx-js/core@0.8.0':
+    resolution: {integrity: sha512-+1Q8rEtj+2fczdb9b3YMiMtpBXrQbSbIXFRc9I10d2wgQ52Qtxt9jjMwtXGfWK3kHfDCpnxhNtd71x+r7Z34LQ==}
+
   '@webgpu/types@0.1.68':
     resolution: {integrity: sha512-3ab1B59Ojb6RwjOspYLsTpCzbNB3ZaamIAxBMmvnNkiDoLTZUOBXZ9p5nAYVEkQlDdf6qAZWi1pqj9+ypiqznA==}
 
@@ -1578,6 +1587,20 @@ packages:
     resolution: {integrity: sha512-MbjN408fEndfiQXbFQ1vnd+1NoLDsnQW41410oQBXiyXDMYH5z505juWa4KUE1LqxRC7DgOgZDbKLxHIwm27hA==}
     engines: {node: '>=0.10'}
 
+  lenis@1.3.17:
+    resolution: {integrity: sha512-k9T9rgcxne49ggJOvXCraWn5dt7u2mO+BNkhyu6yxuEnm9c092kAW5Bus5SO211zUvx7aCCEtzy9UWr0RB+oJw==}
+    peerDependencies:
+      '@nuxt/kit': '>=3.0.0'
+      react: '>=17.0.0'
+      vue: '>=3.0.0'
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+      react:
+        optional: true
+      vue:
+        optional: true
+
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
@@ -2085,6 +2108,9 @@ packages:
     resolution: {integrity: sha512-XyGQrFmNQ5O/IoKm556ftwKsBg11TIb301MB5dWNicziQBEs2g3gtOYIf7pFiLa0zI2gUwhtCjv9fmjnxKZ1Cg==}
     peerDependencies:
       three: '>=0.128.0'
+
+  three@0.177.0:
+    resolution: {integrity: sha512-EiXv5/qWAaGI+Vz2A+JfavwYCMdGjxVsrn3oBwllUoqYeaBO75J63ZfyaQKoiLrqNHoTlUc6PFgMXnS0kI45zg==}
 
   three@0.182.0:
     resolution: {integrity: sha512-GbHabT+Irv+ihI1/f5kIIsZ+Ef9Sl5A1Y7imvS5RQjWgtTPfPnZ43JmlYI7NtCRDK9zir20lQpfg8/9Yd02OvQ==}
@@ -2953,6 +2979,10 @@ snapshots:
     dependencies:
       '@use-gesture/core': 10.3.1
       react: 19.2.3
+
+  '@vfx-js/core@0.8.0':
+    dependencies:
+      three: 0.177.0
 
   '@webgpu/types@0.1.68': {}
 
@@ -3876,6 +3906,10 @@ snapshots:
     dependencies:
       language-subtag-registry: 0.3.23
 
+  lenis@1.3.17(react@19.2.3):
+    optionalDependencies:
+      react: 19.2.3
+
   levn@0.4.1:
     dependencies:
       prelude-ls: 1.2.1
@@ -4418,6 +4452,8 @@ snapshots:
       fflate: 0.6.10
       potpack: 1.0.2
       three: 0.182.0
+
+  three@0.177.0: {}
 
   three@0.182.0: {}
 
