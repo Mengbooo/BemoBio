@@ -1,6 +1,4 @@
 import ASCIIShader from "./components/ascii/ASCIIShader";
-import ASCIIText from "./components/ascii/ASCIIText";
-import PhysicsSketch from "./components/ascii/PhysicsSketch";
 import Navigation from "./components/Navigation";
 import MagneticGrid from "./components/MagneticGrid";
 import HorizontalGallery from "./components/HorizontalGallery";
@@ -9,6 +7,8 @@ import GradientMaskCard from "./components/GradientMaskCard";
 import NyanCat from "./components/ascii/NyanCat";
 import Prism from "./components/animation/Prism";
 import ColorBends from "./components/animation/ColorBends";
+import DitheringShader from "./components/DitheringShader";
+
 
 
 
@@ -19,60 +19,44 @@ export default function Home() {
       <Navigation />
 
       {/* Main Section - Hero */}
-      <section id="hero" className="container mx-auto px-8 py-24 h-screen flex items-end">
-        <div className="grid grid-cols-12 gap-6 w-full">
-
-          {/* Main ASCII Animation Card */}
-          <div className="col-span-8 relative rounded-[2.5rem] overflow-hidden h-[calc(100vh-12rem)]">
-            <ASCIIShader
-              frequency={2.5}
-              speed={0.4}
-              lightness={1}
-              colorPrimary="#00ff00"
-              colorSecondary="#003300"
-              className="w-full h-full"
-            />
-          </div>
-
-          {/* Right Sidebar Cards */}
-          <div className="col-span-4 flex flex-col gap-6 h-[calc(100vh-12rem)]">
-            {/* ASCII Text Card */}
-            <div className="bg-transparent rounded-3xl overflow-hidden aspect-square relative border border-zinc-800">
-              {/* Top Text */}
-              <div className="absolute top-0 left-0 w-full h-[75%] z-20 pointer-events-none">
-                <div className="pointer-events-auto">
-                  <ASCIIText
-                    text='hey!'
-                    enableWaves={true}
-                    asciiFontSize={6}
-                    textFontSize={150}
-                  />
-                </div>
+      <section id="hero" className="h-screen flex items-center relative overflow-hidden">
+        <div className="absolute inset-0">
+          <DitheringShader
+            bgColor="#000000"
+            envIntensity={2}
+            highlight="#066aff"
+            gridSize={1.5}
+            pixelSizeRatio={1}
+            grayscaleOnly={true}
+            enableControls={false}
+            allowPointerEvents={false}
+          />
+        </div>
+        {/* 矩形覆盖层，与 works 对齐，宽度 70% */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="container mx-auto px-8 h-full flex justify-center items-center">
+            <div className="w-[100%] h-[70vh] md:h-[40vh] lg:h-[40vh] border border-white/20 rounded-lg relative" style={{
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)'
+            }}>
+              {/* 左上角 */}
+              <div className="absolute top-4 left-4 text-xs text-white/100 leading-relaxed">
+                <div className="font-mono">Bolaxious</div>
+                <div>Trying to be a Creative Developer</div>
               </div>
-              {/* Bottom Text */}
-              <div className="absolute top-[25%] left-0 w-full h-[75%] z-10 pointer-events-none">
-                <div className="pointer-events-auto">
-                  <ASCIIText
-                    text='Guys'
-                    enableWaves={true}
-                    asciiFontSize={6}
-                    textFontSize={150}
-                  />
-                </div>
+              {/* 右上角 */}
+              <div className="absolute top-4 right-4 text-xs text-white/100 text-right leading-relaxed">
+                <div>Design × Code</div>
+                <div className="font-mono">2026</div>
               </div>
-            </div>
-            {/* Dithering Shader Card */}
-            <div className="bg-black rounded-3xl overflow-hidden h-112 border border-purple-500/30 relative">
-              <PhysicsSketch />
-            </div>
-            {/* Bottom Text - moved here */}
-            <div className="bg-black px-6 py-4 rounded-2xl mt-auto">
-              <p className="text-xl font-semibold">
-                Here is Bolaxious!<br />A front-end beginner 👀<br />& design novice 🍟
-              </p>
-              <a href="#works" className="w-10 h-10 rounded-full border border-white/30 hover:bg-white/10 transition-colors flex items-center justify-center mt-4">
-                ↓
-              </a>
+              {/* 左下角 */}
+              <div className="absolute bottom-4 left-4 text-xs text-white/100 leading-relaxed">
+                <div className="font-mono">bemobio.vercel.app</div>
+              </div>
+              {/* 右下角 */}
+              <div className="absolute bottom-4 right-4 text-xs text-white/100 text-right leading-relaxed">
+                <div>Based in China</div>
+              </div>
             </div>
           </div>
         </div>
@@ -138,7 +122,7 @@ export default function Home() {
 
       <div className="container mx-auto px-8 relative" style={{ minHeight: '40vh' }}>
         <ColorBends
-          colors={["#ff0000","#00ff00", "#0000ff"]}
+          colors={["#111111ff","#8f8f8fff", "#e5e5ecff"]}
           rotation={0}
           speed={0.2}
           scale={1}
@@ -152,8 +136,8 @@ export default function Home() {
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img 
             src="/stay-tuned-for-more.svg" 
-            alt="Stay tuned for more" 
-            className="w-auto h-16" 
+            alt="Stay tuned for more"
+            className="w-auto h-10 md:h-10 lg:h-12 max-w-full" 
             style={{ filter: 'invert(1) brightness(2) drop-shadow(0 0 8px white)' }}
           />
         </div>

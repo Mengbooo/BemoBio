@@ -110,20 +110,20 @@ float character(int n, vec2 p) {
 void main() {
   vec2 uv = vUv;
   vec2 pix = gl_FragCoord.xy;
-  
+
   // Character size in pixels
   vec2 charSize = vec2(8.0, 12.0);
   vec2 charCoord = floor(pix / charSize);
   vec2 pixInChar = mod(pix, charSize) / charSize;
-  
+
   // Sample noise at character position
   vec3 noisePos = vec3(charCoord * 0.05 * uFrequency, uTime * uSpeed);
   float noiseVal = snoise(noisePos) * 0.5 + 0.5;
-  
+
   // Map noise to ASCII character set
   // Using simple character patterns for demonstration
   int charIndex = int(noiseVal * float(ASCII_CHARS));
-  
+
   // Simple character patterns (you can expand this)
   int patterns[12];
   patterns[0] = 0;        // space (empty)
@@ -138,33 +138,33 @@ void main() {
   patterns[9] = 32642681; // M
   patterns[10] = 31207646; // W
   patterns[11] = 33686238; // Full block
-  
+
   float char = 0.0;
   if (charIndex >= 0 && charIndex < ASCII_CHARS) {
     char = character(patterns[charIndex], pixInChar);
   }
-  
+
   // Apply lightness and color
   float charVal = char * uLightness;
-  
+
   // Create rainbow color based on noise and position
   float hue = noiseVal + uTime * 0.1 + (vUv.x + vUv.y) * 0.5;
   hue = fract(hue); // Keep hue in 0-1 range
-  
+
   // HSV to RGB conversion for rainbow colors
   vec3 rainbowColor;
   float h = hue * 6.0;
   float x = 1.0 - abs(mod(h, 2.0) - 1.0);
-  
+
   if (h < 1.0) rainbowColor = vec3(1.0, x, 0.0);
   else if (h < 2.0) rainbowColor = vec3(x, 1.0, 0.0);
   else if (h < 3.0) rainbowColor = vec3(0.0, 1.0, x);
   else if (h < 4.0) rainbowColor = vec3(0.0, x, 1.0);
   else if (h < 5.0) rainbowColor = vec3(x, 0.0, 1.0);
   else rainbowColor = vec3(1.0, 0.0, x);
-  
+
   vec3 color = rainbowColor * charVal;
-  
+
   gl_FragColor = vec4(color, 1.0);
 }
 `
@@ -191,7 +191,8 @@ export default function ASCIIShader({
   const sceneRef = useRef<THREE.Scene | null>(null)
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null)
   const materialRef = useRef<THREE.ShaderMaterial | null>(null)
-  const animationIdRef = useRef<number | null>(null)
+  const clockRef = useRef<THREE.Clock | null>(null)
+  const resizeObserverRef = useRef<ResizeObserver | null>(null)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -211,7 +212,6 @@ export default function ASCIIShader({
     const primaryRgb = hexToRgb(colorPrimary)
     const secondaryRgb = hexToRgb(colorSecondary)
 
-    // Setup
     const scene = new THREE.Scene()
     sceneRef.current = scene
 
@@ -219,15 +219,14 @@ export default function ASCIIShader({
     cameraRef.current = camera
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: false, // ASCII doesn't need antialiasing
+      antialias: false,
       alpha: true
     })
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight)
-    renderer.setPixelRatio(1) // Keep pixel ratio at 1 for crisp ASCII
+    renderer.setPixelRatio(1)
     containerRef.current.appendChild(renderer.domElement)
     rendererRef.current = renderer
 
-    // Create shader material
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -248,27 +247,24 @@ export default function ASCIIShader({
     })
     materialRef.current = material
 
-    // Create plane
     const geometry = new THREE.PlaneGeometry(2, 2)
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 
-    // Animation
-    const animate = () => {
-      if (materialRef.current) {
-        materialRef.current.uniforms.uTime.value += 0.016
+    const clock = new THREE.Clock()
+    clockRef.current = clock
+
+    renderer.setAnimationLoop(() => {
+      if (materialRef.current && clockRef.current) {
+        materialRef.current.uniforms.uTime.value += clockRef.current.getDelta()
       }
 
       if (rendererRef.current && sceneRef.current && cameraRef.current) {
         rendererRef.current.render(sceneRef.current, cameraRef.current)
       }
+    })
 
-      animationIdRef.current = requestAnimationFrame(animate)
-    }
-    animate()
-
-    // Resize handler
-    const handleResize = () => {
+    const observer = new ResizeObserver(() => {
       if (!containerRef.current || !rendererRef.current || !materialRef.current) return
 
       const width = containerRef.current.clientWidth
@@ -276,16 +272,15 @@ export default function ASCIIShader({
 
       rendererRef.current.setSize(width, height)
       materialRef.current.uniforms.uResolution.value.set(width, height)
-    }
+    })
+    observer.observe(containerRef.current)
+    resizeObserverRef.current = observer
 
-    window.addEventListener('resize', handleResize)
-
-    // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize)
+      renderer.setAnimationLoop(null)
 
-      if (animationIdRef.current) {
-        cancelAnimationFrame(animationIdRef.current)
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect()
       }
 
       if (rendererRef.current && containerRef.current) {
@@ -297,14 +292,46 @@ export default function ASCIIShader({
         materialRef.current.dispose()
       }
     }
+  }, [])
+
+  useEffect(() => {
+    if (!materialRef.current) return
+
+    const hexToRgb = (hex: string) => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+      return result
+        ? {
+            r: parseInt(result[1], 16) / 255,
+            g: parseInt(result[2], 16) / 255,
+            b: parseInt(result[3], 16) / 255
+          }
+        : { r: 0, g: 1, b: 0 }
+    }
+
+    const primaryRgb = hexToRgb(colorPrimary)
+    const secondaryRgb = hexToRgb(colorSecondary)
+
+    materialRef.current.uniforms.uFrequency.value = frequency
+    materialRef.current.uniforms.uSpeed.value = speed
+    materialRef.current.uniforms.uLightness.value = lightness
+    materialRef.current.uniforms.uColorPrimary.value.set(
+      primaryRgb.r,
+      primaryRgb.g,
+      primaryRgb.b
+    )
+    materialRef.current.uniforms.uColorSecondary.value.set(
+      secondaryRgb.r,
+      secondaryRgb.g,
+      secondaryRgb.b
+    )
   }, [frequency, speed, lightness, colorPrimary, colorSecondary])
 
   return (
     <div
       ref={containerRef}
       className={className}
-      style={{ 
-        width: '100%', 
+      style={{
+        width: '100%',
         height: '100%',
         fontFamily: 'monospace',
         backgroundColor: '#000'

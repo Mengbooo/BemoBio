@@ -137,7 +137,7 @@ export default function GradientMaskCard({
           WebkitMaskImage: 'radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), black 20%, rgba(0,0,0,0.25), transparent)',
           maskImage: 'radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), black 20%, rgba(0,0,0,0.25), transparent)',
           minHeight: '100%',
-          backgroundImage: 'linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080, #7b68ee, #00ced1)',
+          backgroundImage: 'linear-gradient(45deg, #ffffff, #a0a0a0, #d0d0d0, #ffffff, #888888, #cccccc)',
           backgroundSize: '400% 400%',
           backgroundClip: 'text',
           WebkitBackgroundClip: 'text',

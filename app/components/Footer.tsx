@@ -12,27 +12,27 @@ export default function Footer() {
     <footer className="h-screen bg-transparent text-white border-t border-zinc-800 flex flex-col relative overflow-hidden">
       {/* Cursor effect only in Footer */}
       {/* <SplashCursor /> */}
-      <div className="container mx-auto px-8 py-16 grid grid-cols-12 gap-6 relative flex-1">
+      <div className="container mx-auto px-8 py-16 grid grid-cols-12 gap-6 relative">
         {/* Logo and Motto */}
         <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-8">
           <div className="w-32 h-16 my-2">
             <Image
-              src="/logo5.png"
+              src="/logo7.png"
               alt="BemoBio Logo"
-              width={400}
-              height={400}
+              width={200}
+              height={200}
               className="rounded-lg object-cover"
             />
           </div>
           {/* Motto */}
-          <div className="mt-6 flex items-center">
+          {/* <div className="mt-20 flex items-center">
             <img 
               src="/lets-create-something-awesome.svg" 
               alt="Let's create something awesome" 
               className="w-auto h-8" 
               style={{ filter: 'invert(1) brightness(10) drop-shadow(0 0 2px white)' }}
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Spacer */}
@@ -55,13 +55,13 @@ export default function Footer() {
         </nav>
 
         {/* Copyright */}
-        <div className="col-span-12 mt-16 mb-8 text-xs uppercase opacity-60 border-t border-zinc-800 pt-8">
+        <div className="col-span-12 mb-8 text-xs uppercase opacity-60 border-t border-zinc-800 pt-8">
           © 2026 BemoBio. All rights reserved
         </div>
       </div>
 
       {/* Fluid Triangle - Fixed height at bottom */}
-      <div className="h-[400px] w-full">
+      <div className="h-[400px] w-full absolute bottom-0 left-0">
         <FluidTriangle />
       </div>
     </footer>

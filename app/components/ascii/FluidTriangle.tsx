@@ -9,6 +9,9 @@ export default function FluidTriangle() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const requestRef = useRef<number | undefined>(undefined)
   const timeRef = useRef<number>(0)
+  // 存储字符宽度和 DPR
+  const charWidthRef = useRef<number>(0)
+  const dprRef = useRef<number>(1)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -16,27 +19,43 @@ export default function FluidTriangle() {
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-
+    
     // --- 配置参数 ---
     const fontSize = 12
     const fontName = 'monospace'
-    
+        
     // 物理参数
     const speed = 0.025      // 波浪速度
-    const fillLevel = 0.2    // 水位高度 (0=满, 1=空, 0.6=60%水位)
+    const fillLevel = 0.2    // 水位高度 (0=满，1=空，0.6=60% 水位)
     const waveScale = 0.03   // 波浪的水平拉伸程度
     const waveHeight = 0.100  // 波浪的垂直振幅 (相对于屏幕高度)
-
+    
     let cols = 0
     let rows = 0
 
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-      cols = Math.floor(canvas.width / fontSize)
-      rows = Math.floor(canvas.height / fontSize)
+      const dpr = window.devicePixelRatio || 1
+      const rect = canvas.getBoundingClientRect()
+      
+      // 设置物理像素（高分屏适配）
+      canvas.width = rect.width * dpr
+      canvas.height = rect.height * dpr
+      
+      // 缩放上下文，使绘图逻辑仍按 CSS 像素处理
+      ctx.scale(dpr, dpr)
+      
+      // 设置字体并测量实际宽度
       ctx.font = `${fontSize}px ${fontName}`
       ctx.textBaseline = 'top'
+      
+      // 测量字符 '@' 的实际宽度（等宽字体最宽的字符之一）
+      const metrics = ctx.measureText('@')
+      charWidthRef.current = metrics.width
+      dprRef.current = dpr
+      
+      // 使用实际字符宽度计算列数（向上取整确保覆盖整个宽度）
+      cols = Math.ceil(rect.width / charWidthRef.current)
+      rows = Math.floor(rect.height / fontSize)
     }
 
     // 内部湍流噪声：模拟水体内部的流动
@@ -64,7 +83,7 @@ export default function FluidTriangle() {
     const render = () => {
       // 1. 黑色背景 (水缸背景)
       ctx.fillStyle = 'black'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillRect(-100, 0, canvas.width+100, canvas.height)
 
       timeRef.current += speed
       const t = timeRef.current
@@ -99,19 +118,13 @@ export default function FluidTriangle() {
 
           if (char === ' ') continue
 
-          // 2. 颜色计算 (HSL)
-          // 色相：保留彩虹流动效果，但波长拉长
-          const hue = (x * 2 + y * 4 + t * 120) % 360
-          
-          // 亮度：随深度衰减，模拟光线无法穿透深水
-          // 表面亮 (65%)，底部暗 (20%)
-          const lightness = 65 - depth * 45
-          
-          // 饱和度：深水处饱和度略微降低
-          const saturation = 90 - depth * 20
+          // 2. 颜色计算：白色，亮度随深度衰减
+          // 表面亮 (90%)，底部暗 (20%)
+          const lightness = 90 - depth * 70
 
-          ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
-          ctx.fillText(char, x * fontSize, y * fontSize)
+          ctx.fillStyle = `hsl(0, 0%, ${lightness}%)`
+          // 使用实际测量的字符宽度进行绘制
+          ctx.fillText(char, x * charWidthRef.current, y * fontSize)
         }
       }
 
@@ -132,7 +145,7 @@ export default function FluidTriangle() {
     <canvas
       ref={canvasRef}
       className="w-full h-full"
-      style={{ background: '#000' }}
+      style={{ background: '#000', display: 'block' }}
     />
   )
 }
