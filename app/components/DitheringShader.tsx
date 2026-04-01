@@ -1,8 +1,7 @@
 'use client';
 
 import { memo, FC, useEffect, useRef, useState, useCallback } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { useFrame } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Center, Float, useGLTF, Lightformer, Environment, AccumulativeShadows, RandomizedLight } from '@react-three/drei';
 import * as THREE from 'three';
 import { Effect } from 'postprocessing';
@@ -178,7 +177,7 @@ const PostProcessing: FC<PostProcessingProps> = ({
 const boxGeometry = new THREE.BoxGeometry();
 const whiteMaterial = new THREE.MeshStandardMaterial({ color: new THREE.Color(1, 1, 1) });
 
-function Room({ highlight }: { highlight: string }): JSX.Element {
+function Room({ highlight }: { highlight: string }) {
   return (
     <group position={[0, -0.5, 0]}>
       <spotLight castShadow position={[-15, 20, 15]} angle={0.2} penumbra={1} intensity={2} decay={0} />
@@ -218,7 +217,7 @@ Shadows.displayName = 'Shadows';
 
 useGLTF.preload('/jousting_helmet-transformed.glb');
 
-function Helmet(props: { [key: string]: any }): JSX.Element {
+function Helmet(props: { [key: string]: any }) {
   const { nodes, materials } = useGLTF('/jousting_helmet-transformed.glb') as any;
   return (
     <group {...props} dispose={null}>
@@ -265,7 +264,7 @@ export default function DitheringShader({
   grayscaleOnly = false,
   enableControls = true,
   allowPointerEvents = true,
-}: DitheringShaderProps): JSX.Element {
+}: DitheringShaderProps) {
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const [modelScale, setModelScale] = useState(3);
 
