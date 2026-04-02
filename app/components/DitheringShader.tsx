@@ -2,7 +2,7 @@
 
 import { memo, FC, useEffect, useRef, useState, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Center, Float, useGLTF, Lightformer, Environment, AccumulativeShadows, RandomizedLight } from '@react-three/drei';
+import { OrbitControls, Center, Float, useGLTF, Lightformer, Environment, AccumulativeShadows, RandomizedLight, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 import { Effect } from 'postprocessing';
 import { EffectComposer, RenderPass, BloomEffect, EffectPass } from 'postprocessing';
@@ -255,6 +255,36 @@ export interface DitheringShaderProps {
   allowPointerEvents?: boolean;
 }
 
+function LoadingOverlay({ bgColor }: { bgColor: string }) {
+  const { progress } = useProgress();
+  const [visible, setVisible] = useState(true);
+  const [opacity, setOpacity] = useState(1);
+
+  useEffect(() => {
+    if (progress >= 100) {
+      setOpacity(0);
+      const timer = setTimeout(() => setVisible(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [progress]);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundColor: bgColor,
+        opacity,
+        transition: 'opacity 1s ease',
+        zIndex: 10,
+        pointerEvents: 'none',
+      }}
+    />
+  );
+}
+
 export default function DitheringShader({
   bgColor = '#ffffff',
   envIntensity = 1.5,
@@ -285,28 +315,31 @@ export default function DitheringShader({
   }, [handleResize]);
 
   return (
-    <Canvas
-      shadows
-      camera={{ position: [0, -1, 4], fov: 65 }}
-      gl={{ alpha: false }}
-      style={{ pointerEvents: allowPointerEvents ? 'auto' : 'none' }}
-      onCreated={({ gl }) => {
-        rendererRef.current = gl;
-        gl.setClearColor(new THREE.Color(bgColor));
-      }}
-    >
-      <group position={[0, -0.5, 0]}>
-        <Float floatIntensity={2} rotationIntensity={1} speed={2}>
-          <Center scale={modelScale} position={[0, 0.8, 0]} rotation={[0, -Math.PI / 3.5, -0.4]}>
-            <Helmet />
-          </Center>
-        </Float>
-      </group>
-      <OrbitControls enableZoom={false} enablePan={false} enabled={enableControls} />
-      <Environment resolution={1024} background={false} environmentIntensity={envIntensity}>
-        <Room highlight={highlight} />
-      </Environment>
-      <PostProcessing gridSize={gridSize} pixelSizeRatio={pixelSizeRatio} grayscaleOnly={grayscaleOnly} />
-    </Canvas>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <Canvas
+        shadows
+        camera={{ position: [0, -1, 4], fov: 65 }}
+        gl={{ alpha: false }}
+        style={{ pointerEvents: allowPointerEvents ? 'auto' : 'none' }}
+        onCreated={({ gl }) => {
+          rendererRef.current = gl;
+          gl.setClearColor(new THREE.Color(bgColor));
+        }}
+      >
+        <group position={[0, -0.5, 0]}>
+          <Float floatIntensity={2} rotationIntensity={1} speed={2}>
+            <Center scale={modelScale} position={[0, 0.8, 0]} rotation={[0, -Math.PI / 3.5, -0.4]}>
+              <Helmet />
+            </Center>
+          </Float>
+        </group>
+        <OrbitControls enableZoom={false} enablePan={false} enabled={enableControls} />
+        <Environment resolution={1024} background={false} environmentIntensity={envIntensity}>
+          <Room highlight={highlight} />
+        </Environment>
+        <PostProcessing gridSize={gridSize} pixelSizeRatio={pixelSizeRatio} grayscaleOnly={grayscaleOnly} />
+      </Canvas>
+      <LoadingOverlay bgColor={bgColor} />
+    </div>
   );
 }

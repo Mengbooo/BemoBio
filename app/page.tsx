@@ -51,7 +51,7 @@ export default function Home() {
               </div>
               {/* 左下角 */}
               <div className="absolute bottom-4 left-4 text-xs text-white/100 leading-relaxed">
-                <div className="font-mono">bemobio.vercel.app</div>
+                <div className="font-mono">https://bemo-bio.vercel.app</div>
               </div>
               {/* 右下角 */}
               <div className="absolute bottom-4 right-4 text-xs text-white/100 text-right leading-relaxed">
