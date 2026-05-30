@@ -1,13 +1,8 @@
-import ASCIIShader from "./components/ascii/ASCIIShader";
 import Navigation from "./components/Navigation";
-import MagneticGrid from "./components/MagneticGrid";
-import HorizontalGallery from "./components/HorizontalGallery";
 import Footer from "./components/Footer";
 import GradientMaskCard from "./components/GradientMaskCard";
-import NyanCat from "./components/ascii/NyanCat";
-import Prism from "./components/animation/Prism";
 import ColorBends from "./components/animation/ColorBends";
-import DitheringShader from "./components/DitheringShader";
+import HeroDithering from "./components/HeroDithering";
 
 
 
@@ -21,16 +16,7 @@ export default function Home() {
       {/* Main Section - Hero */}
       <section id="hero" className="h-screen flex items-center relative overflow-hidden">
         <div className="absolute inset-0">
-          <DitheringShader
-            bgColor="#000000"
-            envIntensity={2}
-            highlight="#066aff"
-            gridSize={1.5}
-            pixelSizeRatio={1}
-            grayscaleOnly={true}
-            enableControls={false}
-            allowPointerEvents={false}
-          />
+          <HeroDithering />
         </div>
         {/* 矩形覆盖层，与 works 对齐，宽度 70% */}
         <div className="absolute inset-0 pointer-events-none">
