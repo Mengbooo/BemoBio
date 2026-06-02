@@ -215,10 +215,12 @@ Shadows.displayName = 'Shadows';
 
 // ─── Helmet ───────────────────────────────────────────────────────────────────
 
-useGLTF.preload('/jousting_helmet-transformed.glb');
+const HELMET_MODEL_URL = 'https://oss.bolaxious.cn/model/jousting_helmet-transformed.glb';
+
+useGLTF.preload(HELMET_MODEL_URL);
 
 function Helmet(props: { [key: string]: any }) {
-  const { nodes, materials } = useGLTF('/jousting_helmet-transformed.glb') as any;
+  const { nodes, materials } = useGLTF(HELMET_MODEL_URL) as any;
   return (
     <group {...props} dispose={null}>
       <mesh
